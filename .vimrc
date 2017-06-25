@@ -10,7 +10,16 @@ function! BuildYCM(info)
 endfunction
 
 call plug#begin()
+" ================== Plugins in evaluation ===================
+" Braceless vim
+Plug 'tweekmonster/braceless.vim'
+"
 " Plug 'davidhalter/jedi-vim'
+"
+" Python and other lenguajes code checker
+" Plug 'scrooloose/syntastic'
+" =========== Plugings =====================
+" Youcompleteme
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'cjrh/vim-conda'
 Plug 'sirver/ultisnips'
@@ -27,8 +36,6 @@ Plug 'vim-airline/vim-airline-themes'
 " Autoclose
 Plug 'Townk/vim-autoclose'
 
-" Python and other lenguajes code checker
-"Plug 'scrooloose/syntastic'
 
 "Paint css colors with the real color
 Plug 'lilydjwg/colorizer'
@@ -142,6 +149,7 @@ map \ <Plug>(easymotion-tn)
 let g:pymode_options_max_line_length = 79
 let g:pymode_options_colorcolumn = 1
 let g:pymode_indent = 1
+let g:pymode_folding = 0
 
 let g:pymode_quickfix_minheight = 1
 let g:pymode_quickfix_maxheight = 2
@@ -175,3 +183,7 @@ set completeopt-=preview
 let g:ycm_add_preview_to_completeopt = 0
 
 let g:ycm_complete_in_comments = 1
+
+" Braceless
+autocmd FileType python,coffee BracelessEnable +indent +fold +fold-slow +highlight-cc2
+highlight BracelessIndent ctermfg=3 ctermbg=0 cterm=inverse
