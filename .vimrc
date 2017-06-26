@@ -14,13 +14,13 @@ call plug#begin()
 " Braceless vim
 Plug 'tweekmonster/braceless.vim'
 "
-" Plug 'davidhalter/jedi-vim'
+Plug 'davidhalter/jedi-vim'
 "
 " Python and other lenguajes code checker
-" Plug 'scrooloose/syntastic'
+ Plug 'scrooloose/syntastic'
 " =========== Plugings =====================
 " Youcompleteme
-Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+"Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'cjrh/vim-conda'
 Plug 'sirver/ultisnips'
 Plug 'honza/vim-snippets'
@@ -63,14 +63,32 @@ Plug 'matze/vim-move'
 call plug#end()
 
 "--- Ejecutar Python en Conda-Vim
+"Color Highlight
+highlight Search cterm=NONE ctermfg=black ctermbg=grey
+
 map <F9> :!python % <CR>
 
 let g:pep8_map='<F5>'
 
 set number
 
+" Highlight in search results
+set hlsearch
+
+" Ver siempre la barra inferior
+set ls=2
+syntax on
+
 "file finder mapping
 let g:ctrlp_map = ',e'
+
+" probando
+set showcmd
+set showmatch
+set ignorecase
+
+set clipboard=unnamedplus
+
 
 " Airline ------------------------------
 "
@@ -105,9 +123,10 @@ let g:choosewin_overlay_enable = 1
 " Linea a los 80
 "set colorcolumn=80
 "highlight ColorColumn ctermbg=235 guibg=#2c2d27
+"highlight ColorColumn ctermbg=235 guibg=#3f0000
 
 " Jedi-Vim config ----------------------------
-"let g:jedi#show_call_signatures = 0
+let g:jedi#show_call_signatures = 0
 
 " Neocomplcache -------------------------------
 let g:neocomplcache_enable_at_startup = 1
@@ -137,14 +156,24 @@ map \ <Plug>(easymotion-tn)
 "set shiftwidth=4
 
 " Syntastic config ----------------------
-"set statusline+=%#warningmsg#
+let g:syntastic_aggregate_errors = 1
+set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
 "set statusline+=%*
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 0
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
-"
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
+" Comprobar al abrir
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" ver errores en el archivo
+nmap <leader>e :Errors<CR>
+" Iconos
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '⚠'
+let g:syntastic_style_error_symbol = '✗'
+let g:syntastic_style_warning_symbol = '⚠'
+
 " Python-mode config -----------------------------
 let g:pymode_options_max_line_length = 79
 let g:pymode_options_colorcolumn = 1
@@ -178,12 +207,18 @@ let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_builtin_types = g:pymode_syntax_all
 
 " Youcompleteme
+" Semantic completions.
+"let g:ycm_python_binary_path = 'home/horacio/anaconda3/bin/python3'
 " Disable preview window up
 set completeopt-=preview
 let g:ycm_add_preview_to_completeopt = 0
 
 let g:ycm_complete_in_comments = 1
+let g:ycm_key_list_select_completion=[]
+let g:ycm_key_list_previous_completion=[]
+
+nnoremap <leader>jd :YcmCompleter GoTo<CR>
 
 " Braceless
 autocmd FileType python,coffee BracelessEnable +indent +fold +fold-slow +highlight-cc2
-highlight BracelessIndent ctermfg=3 ctermbg=0 cterm=inverse
+highlight BracelessIndent ctermfg=4 ctermbg=1 cterm=inverse
