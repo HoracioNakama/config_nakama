@@ -1,14 +1,3 @@
-" Install YouCompleteMe
-function! BuildYCM(info)
-  " info is a dictionary with 3 fields
-  " -name: name of the plugin
-  "  - status: 'installed', 'updated', or 'unchanged'
-  "  - force: set on PlugInstall! or PlugUpdate!
-  if a:info.status == 'installed' || a:info.force
-    !./install.py
-  endif
-endfunction
-
 call plug#begin()
 " ================== Plugins in evaluation ===================
 " Braceless vim
@@ -17,10 +6,8 @@ Plug 'tweekmonster/braceless.vim'
 Plug 'davidhalter/jedi-vim'
 "
 " Python and other lenguajes code checker
- Plug 'scrooloose/syntastic'
+"Plug 'scrooloose/syntastic'
 " =========== Plugings =====================
-" Youcompleteme
-"Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'cjrh/vim-conda'
 Plug 'sirver/ultisnips'
 Plug 'honza/vim-snippets'
@@ -28,6 +15,8 @@ Plug 'jeffkreeftmeijer/vim-numbertoggle'
 Plug 'cburroughs/pep8.py'
 Plug 'scrooloose/nerdcommenter'
 Plug 'klen/python-mode'
+" pydoc
+Plug 'fs111/pydoc.vim'
 
 " Airline
 Plug 'vim-airline/vim-airline'
@@ -62,10 +51,12 @@ Plug 'easymotion/vim-easymotion'
 Plug 'matze/vim-move'
 call plug#end()
 
-"--- Ejecutar Python en Conda-Vim
+" Autocompletado de carpetas y archivos
+set wildmode=list:longest
 "Color Highlight
 highlight Search cterm=NONE ctermfg=black ctermbg=grey
 
+"--- Ejecutar Python en Conda-Vim
 map <F9> :!python % <CR>
 
 let g:pep8_map='<F5>'
@@ -83,6 +74,9 @@ syntax on
 let g:ctrlp_map = ',e'
 
 " probando
+"nnoremap <Space> i_<Esc>r
+nnoremap s :exec "normal i".nr2char(getchar())."\e"<CR>
+nnoremap S :exec "normal a".nr2char(getchar())."\e"<CR>
 set showcmd
 set showmatch
 set ignorecase
@@ -127,21 +121,23 @@ let g:choosewin_overlay_enable = 1
 
 " Jedi-Vim config ----------------------------
 let g:jedi#show_call_signatures = 0
+let g:jedi#auto_close_doc = 1
+let g:jedi#documentation_command = 'I'
 
 " Neocomplcache -------------------------------
-let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_ignore_case = 1
-let g:neocomplcache_enable_smart_case = 1
-let g:neocomplcache_enable_auto_select = 1
-let g:neocomplcache_enable_fuzzy_completion = 1
-let g:neocomplcache_enable_camel_case_completion = 1
-let g:neocomplcache_enable_underbar_completion = 1
-let g:neocomplcache_auto_completion_start_length = 1
-let g:neocomplcache_manual_completion_start_length = 1
-let g:neocomplcache_min_keyword_length = 1
-let g:neocomplcache_min_syntax_length = 1
-let g:neocomplcache_same_filetype_lists = {}
-let g:neocomplcache_same_filetype_lists._ = '_'
+"let g:neocomplcache_enable_at_startup = 1
+"let g:neocomplcache_enable_ignore_case = 1
+"let g:neocomplcache_enable_smart_case = 1
+"let g:neocomplcache_enable_auto_select = 1
+"let g:neocomplcache_enable_fuzzy_completion = 1
+"let g:neocomplcache_enable_camel_case_completion = 1
+"let g:neocomplcache_enable_underbar_completion = 1
+"let g:neocomplcache_auto_completion_start_length = 1
+"let g:neocomplcache_manual_completion_start_length = 1
+"let g:neocomplcache_min_keyword_length = 1
+"let g:neocomplcache_min_syntax_length = 1
+"let g:neocomplcache_same_filetype_lists = {}
+"let g:neocomplcache_same_filetype_lists._ = '_'
 
 " Move ------------------------------------------
 let g:move_key_modifier = 'C'
@@ -156,25 +152,28 @@ map \ <Plug>(easymotion-tn)
 "set shiftwidth=4
 
 " Syntastic config ----------------------
-let g:syntastic_aggregate_errors = 1
-set statusline+=%#warningmsg#
+"let g:syntastic_aggregate_errors = 1
+"let g:syntastic_stl_format = "[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]"
+"set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
 "set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-" Comprobar al abrir
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+ "Comprobar al abrir
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
 
-" ver errores en el archivo
-nmap <leader>e :Errors<CR>
-" Iconos
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_warning_symbol = '⚠'
-let g:syntastic_style_error_symbol = '✗'
-let g:syntastic_style_warning_symbol = '⚠'
+ "ver errores en el archivo
+"nmap <leader>e :Errors<CR>
+ "Iconos
+"let g:syntastic_enable_signs = 1
+"let g:syntastic_error_symbol = '✗'
+"let g:syntastic_warning_symbol = '⚠'
+"let g:syntastic_style_error_symbol = '✗'
+"let g:syntastic_style_warning_symbol = '⚠'
 
 " Python-mode config -----------------------------
+let g:pymode = 1
 let g:pymode_options_max_line_length = 79
 let g:pymode_options_colorcolumn = 1
 let g:pymode_indent = 1
@@ -186,8 +185,11 @@ let g:pymode_quickfix_maxheight = 2
 let g:pymode_doc = 1
 let g:pymode_doc_bind = 'K'
 
+:set eadirection=hor
+
 " Deshabilitando rope, soporte virtualenv y runcode
 let g:pymode_rope = 0
+let g:pymode_rope_completion = 0
 let g:pymode_virtualenv_enabled = 0
 let g:pymode_run = 0
 
@@ -196,6 +198,19 @@ let g:pymode_lint = 1
 let g:pymode_lint_on_write = 1
 let g:pymode_lint_on_fly = 1
 let g:pymode_lint_message = 1
+let g:pymode_lint_signs = 1
+"let g:pymode_lint_todo_symbol = 'WW'
+"let g:pymode_lint_comment_symbol = 'CC'
+"let g:pymode_lint_visual_symbol = 'RR'
+"let g:pymode_lint_error_symbol = 'EE'
+"let g:pymode_lint_info_symbol = 'II'
+"let g:pymode_lint_pyflakes_symbol = 'FF'
+let g:pymode_lint_todo_symbol = '✗✗'
+let g:pymode_lint_comment_symbol = '✗✗'
+let g:pymode_lint_visual_symbol = '✗✗'
+let g:pymode_lint_error_symbol = '⚠⚠'
+let g:pymode_lint_info_symbol = '⚠⚠'
+let g:pymode_lint_pyflakes_symbol = '⚠⚠'
 
 " Syntax
 let g:pymode_syntax = 1
@@ -206,19 +221,12 @@ let g:pymode_syntax_highlight_self = g:pymode_syntax_all
 let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_builtin_types = g:pymode_syntax_all
 
-" Youcompleteme
-" Semantic completions.
-"let g:ycm_python_binary_path = 'home/horacio/anaconda3/bin/python3'
-" Disable preview window up
-set completeopt-=preview
-let g:ycm_add_preview_to_completeopt = 0
-
-let g:ycm_complete_in_comments = 1
-let g:ycm_key_list_select_completion=[]
-let g:ycm_key_list_previous_completion=[]
-
-nnoremap <leader>jd :YcmCompleter GoTo<CR>
-
 " Braceless
 autocmd FileType python,coffee BracelessEnable +indent +fold +fold-slow +highlight-cc2
 highlight BracelessIndent ctermfg=4 ctermbg=1 cterm=inverse
+
+" Pydoc
+filetype plugin on
+
+" Autoclose
+let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
