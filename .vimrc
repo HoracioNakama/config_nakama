@@ -8,6 +8,9 @@ Plug 'davidhalter/jedi-vim'
 " Python and other lenguajes code checker
 "Plug 'scrooloose/syntastic'
 " =========== Plugings =====================
+" Git
+Plug 'mhinz/vim-signify'
+
 Plug 'cjrh/vim-conda'
 Plug 'sirver/ultisnips'
 Plug 'honza/vim-snippets'
@@ -230,3 +233,8 @@ filetype plugin on
 
 " Autoclose
 let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
+
+" Signify
+highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
+highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
+highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
