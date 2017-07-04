@@ -45,7 +45,9 @@ Plug 't9md/vim-choosewin'
 Plug 'tpope/vim-unimpaired'
 
 " Neocomplcache
-Plug 'shougo/neocomplcache.vim'
+"Plug 'shougo/neocomplcache.vim'
+" Neocomplete
+Plug 'shougo/neocomplete.vim'
 
 " EasyMotion
 Plug 'easymotion/vim-easymotion'
@@ -122,10 +124,6 @@ let g:choosewin_overlay_enable = 1
 "highlight ColorColumn ctermbg=235 guibg=#2c2d27
 "highlight ColorColumn ctermbg=235 guibg=#3f0000
 
-" Jedi-Vim config ----------------------------
-let g:jedi#show_call_signatures = 0
-let g:jedi#auto_close_doc = 1
-let g:jedi#documentation_command = 'I'
 
 " Neocomplcache -------------------------------
 "let g:neocomplcache_enable_at_startup = 1
@@ -182,8 +180,8 @@ let g:pymode_options_colorcolumn = 1
 let g:pymode_indent = 1
 let g:pymode_folding = 0
 
-let g:pymode_quickfix_minheight = 1
-let g:pymode_quickfix_maxheight = 2
+let g:pymode_quickfix_minheight = 3
+let g:pymode_quickfix_maxheight = 4
 
 let g:pymode_doc = 1
 let g:pymode_doc_bind = 'K'
@@ -238,3 +236,62 @@ let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
 highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
 highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
 highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
+
+" Neocomplete
+" Disable AutoComplPop y enable Neocomplete
+let g:acp_enableAtStartup = 0
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+let g:necomplete#sources#syntas#min_length = 3
+
+" Jedi + Neocomplete
+autocmd FileType python setlocal omnifunc=jedi#completions
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteTags
+let g:jedicompletions_enabled = 0
+let g:jedi#auto_vim_configuration = 0
+
+" Define dictionary
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \}
+
+"Define keyword.
+if !exists('g:necompplete#keyword_patterns')
+	let g:necomplete#keyword_patterns = {}
+endif
+let g:necomplete#keyword_patterns = {}
+
+if !exists('g:necomplete#force_omni_input_patterns')
+	let g:necomplete#force_omni_input_patterns = {}
+endif
+let g:necomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+"
+" AutoComplPop like behavior.
+let g:neocomplete#enable_auto_select = 1
+
+" Jedi-Vim config ----------------------------
+let g:jedi#show_call_signatures = 0
+let g:jedi#auto_close_doc = 1
