@@ -1,7 +1,7 @@
 call plug#begin()
 " ================== Plugins in evaluation ===================
 " Braceless vim
-Plug 'tweekmonster/braceless.vim'
+"Plug 'tweekmonster/braceless.vim'
 "
 Plug 'davidhalter/jedi-vim'
 "
@@ -11,7 +11,7 @@ Plug 'davidhalter/jedi-vim'
 " Git
 Plug 'mhinz/vim-signify'
 
-Plug 'cjrh/vim-conda'
+"Plug 'cjrh/vim-conda'
 Plug 'sirver/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'jeffkreeftmeijer/vim-numbertoggle'
@@ -223,8 +223,8 @@ let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_builtin_types = g:pymode_syntax_all
 
 " Braceless
-autocmd FileType python,coffee BracelessEnable +indent +fold +fold-slow +highlight-cc2
-highlight BracelessIndent ctermfg=4 ctermbg=1 cterm=inverse
+"autocmd FileType python,coffee BracelessEnable +indent +fold +fold-slow +highlight-cc2
+"highlight BracelessIndent ctermfg=4 ctermbg=1 cterm=inverse
 
 " Pydoc
 filetype plugin on
